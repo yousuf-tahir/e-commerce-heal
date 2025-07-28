@@ -1,6 +1,8 @@
+import React, { useState } from 'react';
 import { StyleSheet, ScrollView, Pressable, Linking, Image } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { Link } from 'expo-router';
+// import { useState } from 'react';
 
 export default function HomeScreen() {
   const openInstagram = () => {
@@ -22,7 +24,28 @@ export default function HomeScreen() {
       // description: 'Designed an interactive personal blog using HTML and CSS with unique styling.',
     },
   ];
+const NAVBAR_COLOR = '#9050cc';
 
+function FooterLink({ children }: { children: React.ReactNode }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <Pressable
+      onHoverIn={() => setHovered(true)}
+      onHoverOut={() => setHovered(false)}
+      // Only use view styles here!
+      style={{ backgroundColor: 'transparent' }}
+    >
+      <Text
+        style={[
+          styles.footerLink,
+          hovered && { color: NAVBAR_COLOR, textDecorationLine: 'underline', cursor: 'pointer' },
+        ]}
+      >
+        {children}
+      </Text>
+    </Pressable>
+  );
+}
   return (
     <ScrollView style={styles.container}>
       {/* Hero Section */}
@@ -129,32 +152,32 @@ export default function HomeScreen() {
       </View>
 
       {/* Footer */}
-      <View style={styles.footer}>
-        <View style={styles.footerContent}>
-          <View style={styles.footerSection}>
-            <Text style={styles.footerTitle}>AIR UNIVERSITY</Text>
-            <Text style={styles.footerLink}>About Us</Text>
-            <Text style={styles.footerLink}>Departments</Text>
-            <Text style={styles.footerLink}>Policies</Text>
-            <Text style={styles.footerLink}>Programs</Text>
-          </View>
-          <View style={styles.footerSection}>
-            <Text style={styles.footerTitle}>get help</Text>
-            <Text style={styles.footerLink}>FAQ</Text>
-            <Text style={styles.footerLink}>Admissions</Text>
-            <Text style={styles.footerLink}>Registration</Text>
-            <Text style={styles.footerLink}>Alumni</Text>
-            <Text style={styles.footerLink}>Financial Aid</Text>
-          </View>
-          <View style={styles.footerSection}>
-            <Text style={styles.footerTitle}>Resources</Text>
-            <Text style={styles.footerLink}>Campus Map</Text>
-            <Text style={styles.footerLink}>Community Engagement</Text>
-            <Text style={styles.footerLink}>Directory</Text>
-            <Text style={styles.footerLink}>Air Profiles</Text>
-          </View>
-        </View>
-      </View>
+     <View style={styles.footer}>
+  <View style={styles.footerContent}>
+    <View style={styles.footerSection}>
+      <Text style={styles.footerTitle}>AIR UNIVERSITY</Text>
+      <FooterLink>About Us</FooterLink>
+      <FooterLink>Departments</FooterLink>
+      <FooterLink>Policies</FooterLink>
+      <FooterLink>Programs</FooterLink>
+    </View>
+    <View style={styles.footerSection}>
+      <Text style={styles.footerTitle}>get help</Text>
+      <FooterLink>FAQ</FooterLink>
+      <FooterLink>Admissions</FooterLink>
+      <FooterLink>Registration</FooterLink>
+      <FooterLink>Alumni</FooterLink>
+      <FooterLink>Financial Aid</FooterLink>
+    </View>
+    <View style={styles.footerSection}>
+      <Text style={styles.footerTitle}>Resources</Text>
+      <FooterLink>Campus Map</FooterLink>
+      <FooterLink>Community Engagement</FooterLink>
+      <FooterLink>Directory</FooterLink>
+      <FooterLink>Air Profiles</FooterLink>
+    </View>
+  </View>
+</View>
     </ScrollView>
   );
 }
@@ -386,11 +409,14 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
-  footerLink: {
-    fontSize: 16,
-    color: 'rgba(0, 0, 0, 0.8)',
-    marginBottom: 12,
-    lineHeight: 24,
-  },
+ footerLink: {
+  fontSize: 16,
+  color: 'rgba(0, 0, 0, 0.8)',
+  marginBottom: 12,
+  lineHeight: 24,
+  cursor: 'pointer', // Add this for web
+  textDecorationLine: 'none',
+},
 });
+
 

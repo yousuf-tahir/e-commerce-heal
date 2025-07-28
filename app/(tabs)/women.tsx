@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { Link } from 'expo-router';
@@ -73,9 +74,14 @@ export default function WomenScreen() {
               <View style={styles.categoryContent}>
                 <Text style={styles.categoryTitle}>{category.title}</Text>
                 <Text style={styles.categoryDescription}>{category.description}</Text>
-                <View style={styles.shopButton}>
-                  <Text style={styles.shopButtonText}>Shop Now</Text>
-                </View>
+                <Pressable
+  style={({ hovered }) => [
+    styles.shopButton,
+    hovered && styles.shopButtonHover,
+  ]}
+>
+  <Text style={styles.shopButtonText}>Shop Now</Text>
+</Pressable>
               </View>
             </View>
           </Pressable>
@@ -83,26 +89,35 @@ export default function WomenScreen() {
       </View>
 
       {/* Featured Section */}
-      <View style={styles.featuredSection}>
-        <Text style={styles.featuredTitle}>Empowering Women Through Fashion</Text>
-        <View style={styles.featuresGrid}>
-          <View style={styles.featureItem}>
-            <Text style={styles.featureIcon}>✨</Text>
-            <Text style={styles.featureTitle}>Elegant Designs</Text>
-            <Text style={styles.featureDescription}>Sophisticated styles for the modern woman</Text>
-          </View>
-          <View style={styles.featureItem}>
-            <Text style={styles.featureIcon}>💎</Text>
-            <Text style={styles.featureTitle}>Premium Fabrics</Text>
-            <Text style={styles.featureDescription}>Luxurious materials for ultimate comfort</Text>
-          </View>
-          <View style={styles.featureItem}>
-            <Text style={styles.featureIcon}>🌟</Text>
-            <Text style={styles.featureTitle}>Versatile Styles</Text>
-            <Text style={styles.featureDescription}>From casual to formal, we've got you covered</Text>
-          </View>
-        </View>
-      </View>
+     <View style={styles.featuredSection}>
+  <Text style={styles.featuredTitle}>Empowering Women Through Fashion</Text>
+  <View style={styles.featuresGrid}>
+    <View style={styles.featureItem}>
+      <Image
+        source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/wardrobe.png' }}
+        style={{ width: 48, height: 48, marginBottom: 16 }}
+      />
+      <Text style={styles.featureTitle}>Elegant Designs</Text>
+      <Text style={styles.featureDescription}>Sophisticated styles for the modern woman</Text>
+    </View>
+    <View style={styles.featureItem}>
+      <Image
+        source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/dress-front-view.png' }}
+        style={{ width: 48, height: 48, marginBottom: 16 }}
+      />
+      <Text style={styles.featureTitle}>Premium Fabrics</Text>
+      <Text style={styles.featureDescription}>Luxurious materials for ultimate comfort</Text>
+    </View>
+    <View style={styles.featureItem}>
+      <Image
+        source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/wardrobe.png' }}
+        style={{ width: 48, height: 48, marginBottom: 16 }}
+      />
+      <Text style={styles.featureTitle}>Versatile Styles</Text>
+      <Text style={styles.featureDescription}>From casual to formal, we've got you covered</Text>
+    </View>
+  </View>
+</View>
 
       {/* Inspiration Section */}
       <View style={styles.inspirationSection}>
@@ -233,11 +248,17 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   categoriesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
     paddingHorizontal: 40,
     marginBottom: 60,
-    gap: 30,
+    gap: 30, // For React Native Web, otherwise use marginRight on cards
   },
-  categoryCard: {
+   categoryCard: {
+    flex: 1,
+    minWidth: 250,
+    maxWidth: 350,
     height: 400,
     borderRadius: 20,
     overflow: 'hidden',
@@ -247,6 +268,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 20,
     elevation: 10,
+    marginRight: 30, // For spacing between cards (if gap doesn't work)
   },
   categoryImage: {
     width: '100%',
@@ -254,7 +276,7 @@ const styles = StyleSheet.create({
   },
   categoryOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(144, 80, 204, 0.27)',
+    backgroundColor: 'rgba(144, 80, 204, 0)',
     justifyContent: 'flex-end',
     padding: 30,
   },
@@ -288,6 +310,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  shopButtonHover: {
+    color: '#ecececff',
+  backgroundColor: '#7a3fc8', // Slightly darker or any color you want on hover
+  transform: [{ scale: 1.05 }],
+  shadowColor: '#9050cc',
+  shadowOpacity: 0.3,
+  shadowRadius: 8,
+  
+},
   featuredSection: {
     backgroundColor: '#fdf2f8',
     paddingVertical: 60,

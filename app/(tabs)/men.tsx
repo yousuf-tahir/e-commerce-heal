@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { Link } from 'expo-router';
@@ -20,7 +21,28 @@ export default function MenScreen() {
       description: 'Essential t-shirts in various styles and colors',
     },
   ];
+const NAVBAR_COLOR = '#9050cc';
 
+function FooterLink({ children }: { children: React.ReactNode }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <Pressable
+      onHoverIn={() => setHovered(true)}
+      onHoverOut={() => setHovered(false)}
+      // Only use view styles here!
+      style={{ backgroundColor: 'transparent' }}
+    >
+      <Text
+        style={[
+          styles.footerLink,
+          hovered && { color: NAVBAR_COLOR, textDecorationLine: 'underline', cursor: 'pointer' },
+        ]}
+      >
+        {children}
+      </Text>
+    </Pressable>
+  );
+}
   return (
     <ScrollView style={styles.container}>
       {/* Header */}
@@ -73,17 +95,51 @@ export default function MenScreen() {
               <View style={styles.categoryContent}>
                 <Text style={styles.categoryTitle}>{category.title}</Text>
                 <Text style={styles.categoryDescription}>{category.description}</Text>
-                <View style={styles.shopButton}>
-                  <Text style={styles.shopButtonText}>Shop Now</Text>
-                </View>
+                <Pressable
+  style={({ hovered }) => [
+    styles.shopButton,
+    hovered && styles.shopButtonHover,
+  ]}
+>
+  <Text style={styles.shopButtonText}>Shop Now</Text>
+</Pressable>
               </View>
             </View>
           </Pressable>
         ))}
       </View>
-
-      {/* Featured Section */}
+      {/* Improved Featured Section */}
       <View style={styles.featuredSection}>
+        <Text style={styles.featuredTitle}>Why Choose Our Men's Collection?</Text>
+        <View style={styles.featuresGrid}>
+          <View style={styles.featureItem}>
+        <Image
+          source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/trophy.png' }}
+          style={{ width: 48, height: 48, marginBottom: 16 }}
+        />
+        <Text style={styles.featureTitle}>Premium Quality</Text>
+        <Text style={styles.featureDescription}>High-quality materials and craftsmanship</Text>
+          </View>
+          <View style={styles.featureItem}>
+        <Image
+          source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/light-on.png' }}
+          style={{ width: 48, height: 48, marginBottom: 16 }}
+        />
+        <Text style={styles.featureTitle}>Latest Trends</Text>
+        <Text style={styles.featureDescription}>Stay ahead with cutting-edge fashion</Text>
+          </View>
+          <View style={styles.featureItem}>
+        <Image
+          source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/checked-2--v1.png' }}
+          style={{ width: 48, height: 48, marginBottom: 16 }}
+        />
+        <Text style={styles.featureTitle}>Perfect Fit</Text>
+        <Text style={styles.featureDescription}>Designed for comfort and style</Text>
+          </View>
+        </View>
+      </View>
+      {/* Featured Section */}
+      {/* <View style={styles.featuredSection}>
         <Text style={styles.featuredTitle}>Why Choose Our Men's Collection?</Text>
         <View style={styles.featuresGrid}>
           <View style={styles.featureItem}>
@@ -102,35 +158,35 @@ export default function MenScreen() {
             <Text style={styles.featureDescription}>Designed for comfort and style</Text>
           </View>
         </View>
-      </View>
+      </View> */}
 
       {/* Footer */}
       <View style={styles.footer}>
-        <View style={styles.footerContent}>
-          <View style={styles.footerSection}>
-            <Text style={styles.footerTitle}>AIR UNIVERSITY</Text>
-            <Text style={styles.footerLink}>About Us</Text>
-            <Text style={styles.footerLink}>Departments</Text>
-            <Text style={styles.footerLink}>Policies</Text>
-            <Text style={styles.footerLink}>Programs</Text>
-          </View>
-          <View style={styles.footerSection}>
-            <Text style={styles.footerTitle}>get help</Text>
-            <Text style={styles.footerLink}>FAQ</Text>
-            <Text style={styles.footerLink}>Admissions</Text>
-            <Text style={styles.footerLink}>Registration</Text>
-            <Text style={styles.footerLink}>Alumni</Text>
-            <Text style={styles.footerLink}>Financial Aid</Text>
-          </View>
-          <View style={styles.footerSection}>
-            <Text style={styles.footerTitle}>Resources</Text>
-            <Text style={styles.footerLink}>Campus Map</Text>
-            <Text style={styles.footerLink}>Community Engagement</Text>
-            <Text style={styles.footerLink}>Directory</Text>
-            <Text style={styles.footerLink}>Air Profiles</Text>
-          </View>
-        </View>
-      </View>
+       <View style={styles.footerContent}>
+         <View style={styles.footerSection}>
+           <Text style={styles.footerTitle}>AIR UNIVERSITY</Text>
+           <FooterLink>About Us</FooterLink>
+           <FooterLink>Departments</FooterLink>
+           <FooterLink>Policies</FooterLink>
+           <FooterLink>Programs</FooterLink>
+         </View>
+         <View style={styles.footerSection}>
+           <Text style={styles.footerTitle}>get help</Text>
+           <FooterLink>FAQ</FooterLink>
+           <FooterLink>Admissions</FooterLink>
+           <FooterLink>Registration</FooterLink>
+           <FooterLink>Alumni</FooterLink>
+           <FooterLink>Financial Aid</FooterLink>
+         </View>
+         <View style={styles.footerSection}>
+           <Text style={styles.footerTitle}>Resources</Text>
+           <FooterLink>Campus Map</FooterLink>
+           <FooterLink>Community Engagement</FooterLink>
+           <FooterLink>Directory</FooterLink>
+           <FooterLink>Air Profiles</FooterLink>
+         </View>
+       </View>
+     </View>
     </ScrollView>
   );
 }
@@ -210,11 +266,17 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   categoriesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
     paddingHorizontal: 40,
     marginBottom: 60,
-    gap: 30,
+    gap: 30, // For React Native Web, otherwise use marginRight on cards
   },
-  categoryCard: {
+   categoryCard: {
+    flex: 1,
+    minWidth: 250,
+    maxWidth: 350,
     height: 400,
     borderRadius: 20,
     overflow: 'hidden',
@@ -224,6 +286,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 20,
     elevation: 10,
+    marginRight: 30, // For spacing between cards (if gap doesn't work)
   },
   categoryImage: {
     width: '100%',
@@ -231,7 +294,7 @@ const styles = StyleSheet.create({
   },
   categoryOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0)',
     justifyContent: 'flex-end',
     padding: 30,
   },
@@ -265,6 +328,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  shopButtonHover: {
+  backgroundColor: '#7a3fc8', // Slightly darker or any color you want on hover
+  transform: [{ scale: 1.05 }],
+  shadowColor: '#9050cc',
+  shadowOpacity: 0.3,
+  shadowRadius: 8,
+},
   featuredSection: {
     backgroundColor: '#f8f9fa',
     paddingVertical: 60,
@@ -312,7 +382,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   footer: {
-    backgroundColor: '#9050cc',
+    backgroundColor: 'linear-gradient(135deg, #9050cc, #7240a0)',
     paddingVertical: 60,
     paddingHorizontal: 40,
   },
@@ -335,11 +405,13 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
-  footerLink: {
-    fontSize: 16,
-    color: 'rgba(0, 0, 0, 0.8)',
-    marginBottom: 12,
-    lineHeight: 24,
-  },
+ footerLink: {
+  fontSize: 16,
+  color: 'rgba(0, 0, 0, 0.8)',
+  marginBottom: 12,
+  lineHeight: 24,
+  cursor: 'pointer', // Add this for web
+  textDecorationLine: 'none',
+},
 });
 
