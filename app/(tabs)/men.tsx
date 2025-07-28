@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import { StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { Link } from 'expo-router';
 
 export default function MenScreen() {
+  const router = useRouter();
   const categories = [
     {
       title: 'Hoodies',
@@ -16,39 +18,38 @@ export default function MenScreen() {
       description: 'Premium jackets to keep you warm and fashionable',
     },
     {
-      title: 'T-shirts',
+      title: 'shirts',
       image: 'https://i.pinimg.com/564x/e5/85/c3/e585c3ab72f786506fe5f6a842c6fb51.jpg',
       description: 'Essential t-shirts in various styles and colors',
     },
   ];
-const NAVBAR_COLOR = '#9050cc';
+  const NAVBAR_COLOR = '#9050cc';
 
-function FooterLink({ children }: { children: React.ReactNode }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <Pressable
-      onHoverIn={() => setHovered(true)}
-      onHoverOut={() => setHovered(false)}
-      // Only use view styles here!
-      style={{ backgroundColor: 'transparent' }}
-    >
-      <Text
-        style={[
-          styles.footerLink,
-          hovered && { color: NAVBAR_COLOR, textDecorationLine: 'underline', cursor: 'pointer' },
-        ]}
+  function FooterLink({ children }: { children: React.ReactNode }) {
+    const [hovered, setHovered] = useState(false);
+    return (
+      <Pressable
+        onHoverIn={() => setHovered(true)}
+        onHoverOut={() => setHovered(false)}
+        style={{ backgroundColor: 'transparent' }}
       >
-        {children}
-      </Text>
-    </Pressable>
-  );
-}
+        <Text
+          style={[
+            styles.footerLink,
+            hovered && { color: NAVBAR_COLOR, textDecorationLine: 'underline', cursor: 'pointer' },
+          ]}
+        >
+          {children}
+        </Text>
+      </Pressable>
+    );
+  }
+
   return (
     <ScrollView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.brandName}>Freebee.</Text>
-        
         <View style={styles.navigation}>
           <Link href="/" asChild>
             <Pressable style={styles.navItem}>
@@ -85,9 +86,13 @@ function FooterLink({ children }: { children: React.ReactNode }) {
       {/* Categories Grid */}
       <View style={styles.categoriesContainer}>
         {categories.map((category, index) => (
-          <Pressable key={index} style={styles.categoryCard}>
+          <Pressable
+            key={index}
+            style={styles.categoryCard}
+            onPress={() => router.push(`/men/${category.title.toLowerCase()}`)}
+          >
             <Image
-              source={{uri: category.image}}
+              source={{ uri: category.image }}
               style={styles.categoryImage}
               resizeMode="cover"
             />
@@ -96,97 +101,80 @@ function FooterLink({ children }: { children: React.ReactNode }) {
                 <Text style={styles.categoryTitle}>{category.title}</Text>
                 <Text style={styles.categoryDescription}>{category.description}</Text>
                 <Pressable
-  style={({ hovered }) => [
-    styles.shopButton,
-    hovered && styles.shopButtonHover,
-  ]}
->
-  <Text style={styles.shopButtonText}>Shop Now</Text>
-</Pressable>
+                  onPress={() => router.push(`/men/${category.title.toLowerCase()}`)}
+                  onHoverIn={() => {}}
+                  onHoverOut={() => {}}
+                  style={({ hovered }) => [
+                    styles.shopButton,
+                    hovered && styles.shopButtonHover,
+                  ]}
+                >
+                  <Text style={styles.shopButtonText}>Shop Now</Text>
+                </Pressable>
               </View>
             </View>
           </Pressable>
         ))}
       </View>
+
       {/* Improved Featured Section */}
       <View style={styles.featuredSection}>
         <Text style={styles.featuredTitle}>Why Choose Our Men's Collection?</Text>
         <View style={styles.featuresGrid}>
           <View style={styles.featureItem}>
-        <Image
-          source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/trophy.png' }}
-          style={{ width: 48, height: 48, marginBottom: 16 }}
-        />
-        <Text style={styles.featureTitle}>Premium Quality</Text>
-        <Text style={styles.featureDescription}>High-quality materials and craftsmanship</Text>
-          </View>
-          <View style={styles.featureItem}>
-        <Image
-          source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/light-on.png' }}
-          style={{ width: 48, height: 48, marginBottom: 16 }}
-        />
-        <Text style={styles.featureTitle}>Latest Trends</Text>
-        <Text style={styles.featureDescription}>Stay ahead with cutting-edge fashion</Text>
-          </View>
-          <View style={styles.featureItem}>
-        <Image
-          source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/checked-2--v1.png' }}
-          style={{ width: 48, height: 48, marginBottom: 16 }}
-        />
-        <Text style={styles.featureTitle}>Perfect Fit</Text>
-        <Text style={styles.featureDescription}>Designed for comfort and style</Text>
-          </View>
-        </View>
-      </View>
-      {/* Featured Section */}
-      {/* <View style={styles.featuredSection}>
-        <Text style={styles.featuredTitle}>Why Choose Our Men's Collection?</Text>
-        <View style={styles.featuresGrid}>
-          <View style={styles.featureItem}>
-            <Text style={styles.featureIcon}>👔</Text>
+            <Image
+              source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/trophy.png' }}
+              style={{ width: 48, height: 48, marginBottom: 16 }}
+            />
             <Text style={styles.featureTitle}>Premium Quality</Text>
             <Text style={styles.featureDescription}>High-quality materials and craftsmanship</Text>
           </View>
           <View style={styles.featureItem}>
-            <Text style={styles.featureIcon}>🎨</Text>
+            <Image
+              source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/light-on.png' }}
+              style={{ width: 48, height: 48, marginBottom: 16 }}
+            />
             <Text style={styles.featureTitle}>Latest Trends</Text>
             <Text style={styles.featureDescription}>Stay ahead with cutting-edge fashion</Text>
           </View>
           <View style={styles.featureItem}>
-            <Text style={styles.featureIcon}>💯</Text>
+            <Image
+              source={{ uri: 'https://img.icons8.com/ios-filled/100/9050cc/checked-2--v1.png' }}
+              style={{ width: 48, height: 48, marginBottom: 16 }}
+            />
             <Text style={styles.featureTitle}>Perfect Fit</Text>
             <Text style={styles.featureDescription}>Designed for comfort and style</Text>
           </View>
         </View>
-      </View> */}
+      </View>
 
       {/* Footer */}
       <View style={styles.footer}>
-       <View style={styles.footerContent}>
-         <View style={styles.footerSection}>
-           <Text style={styles.footerTitle}>AIR UNIVERSITY</Text>
-           <FooterLink>About Us</FooterLink>
-           <FooterLink>Departments</FooterLink>
-           <FooterLink>Policies</FooterLink>
-           <FooterLink>Programs</FooterLink>
-         </View>
-         <View style={styles.footerSection}>
-           <Text style={styles.footerTitle}>get help</Text>
-           <FooterLink>FAQ</FooterLink>
-           <FooterLink>Admissions</FooterLink>
-           <FooterLink>Registration</FooterLink>
-           <FooterLink>Alumni</FooterLink>
-           <FooterLink>Financial Aid</FooterLink>
-         </View>
-         <View style={styles.footerSection}>
-           <Text style={styles.footerTitle}>Resources</Text>
-           <FooterLink>Campus Map</FooterLink>
-           <FooterLink>Community Engagement</FooterLink>
-           <FooterLink>Directory</FooterLink>
-           <FooterLink>Air Profiles</FooterLink>
-         </View>
-       </View>
-     </View>
+        <View style={styles.footerContent}>
+          <View style={styles.footerSection}>
+            <Text style={styles.footerTitle}>AIR UNIVERSITY</Text>
+            <FooterLink>About Us</FooterLink>
+            <FooterLink>Departments</FooterLink>
+            <FooterLink>Policies</FooterLink>
+            <FooterLink>Programs</FooterLink>
+          </View>
+          <View style={styles.footerSection}>
+            <Text style={styles.footerTitle}>get help</Text>
+            <FooterLink>FAQ</FooterLink>
+            <FooterLink>Admissions</FooterLink>
+            <FooterLink>Registration</FooterLink>
+            <FooterLink>Alumni</FooterLink>
+            <FooterLink>Financial Aid</FooterLink>
+          </View>
+          <View style={styles.footerSection}>
+            <Text style={styles.footerTitle}>Resources</Text>
+            <FooterLink>Campus Map</FooterLink>
+            <FooterLink>Community Engagement</FooterLink>
+            <FooterLink>Directory</FooterLink>
+            <FooterLink>Air Profiles</FooterLink>
+          </View>
+        </View>
+      </View>
     </ScrollView>
   );
 }
@@ -271,9 +259,9 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     paddingHorizontal: 40,
     marginBottom: 60,
-    gap: 30, // For React Native Web, otherwise use marginRight on cards
+    gap: 30,
   },
-   categoryCard: {
+  categoryCard: {
     flex: 1,
     minWidth: 250,
     maxWidth: 350,
@@ -286,7 +274,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 20,
     elevation: 10,
-    marginRight: 30, // For spacing between cards (if gap doesn't work)
+    marginRight: 30,
   },
   categoryImage: {
     width: '100%',
@@ -329,12 +317,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   shopButtonHover: {
-  backgroundColor: '#7a3fc8', // Slightly darker or any color you want on hover
-  transform: [{ scale: 1.05 }],
-  shadowColor: '#9050cc',
-  shadowOpacity: 0.3,
-  shadowRadius: 8,
-},
+    backgroundColor: '#7a3fc8',
+    transform: [{ scale: 1.05 }],
+    shadowColor: '#9050cc',
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+  },
   featuredSection: {
     backgroundColor: '#f8f9fa',
     paddingVertical: 60,
@@ -405,13 +393,12 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
- footerLink: {
-  fontSize: 16,
-  color: 'rgba(0, 0, 0, 0.8)',
-  marginBottom: 12,
-  lineHeight: 24,
-  cursor: 'pointer', // Add this for web
-  textDecorationLine: 'none',
-},
+  footerLink: {
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.8)',
+    marginBottom: 12,
+    lineHeight: 24,
+    cursor: 'pointer',
+    textDecorationLine: 'none',
+  },
 });
-

@@ -1,22 +1,24 @@
+// ...existing imports...
 import React, { useState } from 'react';
 import { StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { Text, View } from '@/components/Themed';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 export default function WomenScreen() {
+  const router = useRouter();
   const categories = [
     {
-      title: 'Hoodies',
+      title: 'womenhoodies',
       image: 'https://i.pinimg.com/564x/48/00/65/48006513208e7da12491987706d37f11.jpg',
       description: 'Cozy and chic hoodies perfect for any season',
     },
     {
-      title: 'Jackets',
+      title: 'womenjacket',
       image: 'https://i.pinimg.com/564x/e9/67/65/e96765ac2b3a5985e8bc766fd86bb1a6.jpg',
       description: 'Elegant jackets that combine style and functionality',
     },
     {
-      title: 'SweatShirts',
+      title: 'sweatshirts',
       image: 'https://i.pinimg.com/564x/45/45/61/45456136c146dd2f017a47eda6b68e7d.jpg',
       description: 'Comfortable sweatshirts for casual elegance',
     },
@@ -27,7 +29,6 @@ export default function WomenScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.brandName}>Freebee.</Text>
-        
         <View style={styles.navigation}>
           <Link href="/" asChild>
             <Pressable style={styles.navItem}>
@@ -64,9 +65,18 @@ export default function WomenScreen() {
       {/* Categories Grid */}
       <View style={styles.categoriesContainer}>
         {categories.map((category, index) => (
-          <Pressable key={index} style={styles.categoryCard}>
+          <Pressable
+            key={index}
+            style={styles.categoryCard}
+            onPress={() =>
+              router.push({
+                pathname: '/women/[category]',
+                params: { category: category.title.toLowerCase() },
+              })
+            }
+          >
             <Image
-              source={{uri: category.image}}
+              source={{ uri: category.image }}
               style={styles.categoryImage}
               resizeMode="cover"
             />
@@ -75,19 +85,27 @@ export default function WomenScreen() {
                 <Text style={styles.categoryTitle}>{category.title}</Text>
                 <Text style={styles.categoryDescription}>{category.description}</Text>
                 <Pressable
-  style={({ hovered }) => [
-    styles.shopButton,
-    hovered && styles.shopButtonHover,
-  ]}
->
-  <Text style={styles.shopButtonText}>Shop Now</Text>
-</Pressable>
+                  onPress={() =>
+                    router.push({
+                      pathname: '/women/[category]',
+                      params: { category: category.title.toLowerCase() },
+                    })
+                  }
+                  style={({ hovered }) => [
+                    styles.shopButton,
+                    hovered && styles.shopButtonHover,
+                  ]}
+                >
+                  <Text style={styles.shopButtonText}>Shop Now</Text>
+                </Pressable>
               </View>
             </View>
           </Pressable>
         ))}
       </View>
-
+      {/* ...rest of your code remains unchanged... */}
+      {/* Featured Section */}
+      {/* ...rest of your code remains unchanged... */}
       {/* Featured Section */}
      <View style={styles.featuredSection}>
   <Text style={styles.featuredTitle}>Empowering Women Through Fashion</Text>

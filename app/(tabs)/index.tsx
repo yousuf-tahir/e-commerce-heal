@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { StyleSheet, ScrollView, Pressable, Linking, Image } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { Link } from 'expo-router';
+import { Video, ResizeMode } from 'expo-av';
+// import promoVideo from '@/assets/video/Untitled video - Made with Clipchamp (1).mp4';
 // import { useState } from 'react';
 
 export default function HomeScreen() {
   const openInstagram = () => {
-    Linking.openURL('https://www.instagram.com/aliwaqarrr/');
+    Linking.openURL('https://www.instagram.com/yousuf._.tahir/');
   };
 
   const founders = [
@@ -125,14 +127,20 @@ function FooterLink({ children }: { children: React.ReactNode }) {
       </View>
 
       {/* Video Section */}
-      <View style={styles.videoSection}>
-        <View style={styles.divider} />
-        <Text style={styles.videoPlaceholder}>
-          Promotional Video Section
-        </Text>
-       
-        <View style={styles.divider} />
-      </View>
+      {/* Video Section */}
+     <View style={styles.videoSection}>
+  <View style={styles.divider} />
+  <Video
+      source={require('../../assets/Untitled video - Made with Clipchamp (1).mp4')}
+    style={{ width: '100%', height: 400, borderRadius: 16 }}
+    resizeMode={ResizeMode.COVER}
+    shouldPlay
+    isLooping
+    isMuted
+    useNativeControls={false}
+  />
+  <View style={styles.divider} />
+</View>
 
       {/* Founders Section */}
       <View style={styles.section}>
